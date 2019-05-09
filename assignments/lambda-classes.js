@@ -7,10 +7,10 @@
 // * This method logs out a phrase `Hello my name is Fred, I am from Bedrock` where `name` and `location` are the object's own props
 
 class Person{
-    constructor(obj){
-        this.name = obj.name;
-        this.age = obj.age;
-        this.location = obj.location;
+    constructor(obj1){
+        this.name = obj1.name;
+        this.age = obj1.age;
+        this.location = obj1.location;
     }
     speak(){
         console.log(`Hello my name is ${this.name}, I am from ${this.location}`);
@@ -29,18 +29,35 @@ class Person{
  //   * `demo` receives a `subject` string as an argument and logs out the phrase 'Today we are learning about {subject}' where subject is the param passed in.
  //   * `grade` receives a `student` object and a `subject` string as arguments and logs out '{student.name} receives a perfect score on {subject}'
  
+ 
+ //==================STRETCH==============================
+ // * Now that our students have a grade build out a method on the Instructor (this will be used by _BOTH_ instructors and PM's) that will randomly add or subtract points to a student's grade. _Math.random_ will help.
+ 
  class Instructor extends Person{
-     constructor(obj){
-         super(obj);
-         this.specialty = obj.specialty;
-         this.favLanguage = obj.favLanguage;
-         this.catchPhrase = obj.catchPhrase;
+     constructor(obj2){
+         super(obj2);
+         this.specialty = obj2.specialty;
+         this.favLanguage = obj2.favLanguage;
+         this.catchPhrase = obj2.catchPhrase;
      }
      demo(subject){
          console.log(`Today we are learning about ${subject}`);
      }
      grade(student, subject){
          console.log(`${student.name} receives a perfect score on ${subject}`);
+     }
+     changeGrade(student){
+       console.log(`${student.name}'s grade is ${student.grade}%`);
+       if(student.grade < 70){
+         var increment = Math.floor(Math.random() * 100);
+         student.grade += increment;
+         console.log(`${this.name} increased ${student.name}'s grade by ${increment}%`);
+         this.changeGrade(student);
+       }else{
+         console.log(`${student.grade}% is enough to graduate
+         `);
+         student.graduate();
+       }
      }
  }
  
@@ -57,12 +74,24 @@ class Person{
  //   * `PRAssignment` a method that receives a subject as an argument and logs out that the `student.name has submitted a PR for {subject}`
  //   * `sprintChallenge` similar to PRAssignment but logs out `student.name has begun sprint challenge on {subject}`
  
+ //=================================================
+ 
+ // #### Stretch Problem
+ 
+ // * Extend the functionality of the Student by adding a prop called grade and setting it equal to a number between 1-100.
+ // * Add a graduate method to a student.
+ //   * This method, when called, will check the grade of the student and see if they're ready to graduate from Lambda School
+ //   * If the student's grade is above a 70% let them graduate! Otherwise go back to grading their assignments to increase their score.
+ 
+ 
  class Student extends Person{
-     constructor(obj){
-         super(obj);
-         this.previousBackground = obj.previousBackground;
-         this.className = obj.className;
-         this.favSubjects = obj.favSubjects;
+     constructor(obj3){
+         super(obj3);
+         this.previousBackground = obj3.previousBackground;
+         this.className = obj3.className;
+         this.favSubjects = obj3.favSubjects;
+         //     V V V stretch V V V
+         this.grade = obj3.grade;
      }
      listsSubjects(){
          console.log(...this.favSubjects);
@@ -72,6 +101,20 @@ class Person{
      }
      sprintChallenge(subject){
          console.log(`${this.name} has begun sprint challenge on ${subject}`)
+     }
+     graduate(student){
+         if (this.grade <= 80){
+           console.log(`${this.name} barely graduated with a C!`);
+         }
+         if (this.grade < 90 && this.grade > 80){
+           console.log(`${this.name} graduated with a B, good job your mom must be proud!`);
+         }
+         if (this.grade >= 90 && this.grade <= 100){
+           console.log(`${this.name} graduated with an A, what a stallion!`);
+         }
+         if (this.grade > 100){
+           console.log(`${this.name} hacked the system, give him a job!`);
+         }
      }
  }
  
@@ -87,11 +130,11 @@ class Person{
  //   * `debugsCode` a method that takes in a student object and a subject and logs out `{name} debugs {student.name}'s code on {subject}`
  
  class ProjectManager extends Instructor{
-     constructor(obj){
-         super(obj);
-         this.gradClassName = obj.gradClassName;
-         this.favInstructor = obj.favInstructor;
-         this.catchPhrase = obj.catchPhrase;
+     constructor(obj4){
+         super(obj4);
+         this.gradClassName = obj4.gradClassName;
+         this.favInstructor = obj4.favInstructor;
+         this.catchPhrase = obj4.catchPhrase;
      }
      standUp(channel){
          console.log(`${this.name} announces to ${channel}, @channel standy times!`);
@@ -121,16 +164,18 @@ class Person{
    location: "Detroit",
    previousBackground: "welding",
    className: "WEB100",
-   favSubjects: ["Oxyacetylyne", "Submerged Arc", "GTAW"]
+   favSubjects: ["Oxyacetylyne", "Submerged Arc", "GTAW"],
+   grade: 30
  })
  
- const sam = new Student({
+ const crex = new Student({
    name: "C-Rex",
    age: 21,
    location: "Nanoland",
    previousBackground: "Biting heads off",
    className: "WEB20",
-   favSubjects: ["HTML", "CSS", "JAVASCRIPT"]
+   favSubjects: ["HTML", "CSS", "JAVASCRIPT"],
+   grade: 20
  })
  
  
@@ -189,11 +234,15 @@ class Person{
  david.speak()
  josh.demo("Hacking the government")
  josh.grade(bob, "hacking the dance floor")
- sam.listsSubjects()
- sam.PRAssignment("rof RP a dettimbus sah maS")
- sam.sprintChallenge("running from the PoPo")
+ crex.listsSubjects()
+ crex.PRAssignment("rof RP a dettimbus sah maS")
+ crex.sprintChallenge("running from the PoPo")
  adam.standUp("the people who stand")
- adam.debugsCode(sam, "bugged code")
+ adam.debugsCode(crex, "bugged code")
+ 
+ console.log("==========================")
+ 
+ jamie.changeGrade(bob)
  
  
  
